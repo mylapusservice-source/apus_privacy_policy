@@ -552,28 +552,31 @@
     e.preventDefault();
 
     const data = new FormData(this);
-    const params = new URLSearchParams();
+
+    // Crear un form oculto que hace POST real a Google Forms
+    const realForm = document.createElement('form');
+    realForm.method = 'POST';
+    realForm.action = FORM_ACTION;
+    realForm.target = '_blank'; // abre en nueva pestaña, el usuario se queda aquí
 
     for (const [name, entryId] of Object.entries(FIELD_MAP)) {
-      const val = data.get(name) || "";
-      params.append(entryId, val);
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = entryId;
+      input.value = data.get(name) || '';
+      realForm.appendChild(input);
     }
 
-    // Abrimos Google Forms en una pestaña oculta para registrar la respuesta
-    const url = FORM_ACTION + "?" + params.toString();
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = url;
-    document.body.appendChild(iframe);
+    document.body.appendChild(realForm);
+    realForm.submit();
+    document.body.removeChild(realForm);
 
-    // Mostramos pantalla de éxito
-    setTimeout(() => {
-      this.style.display = 'none';
-      const success = document.getElementById('successMsg');
-      success.style.display = 'block';
-      success.style.animation = 'fadeUp 0.5s ease both';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 500);
+    // Mostrar pantalla de éxito
+    this.style.display = 'none';
+    const success = document.getElementById('successMsg');
+    success.style.display = 'block';
+    success.style.animation = 'fadeUp 0.5s ease both';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 
