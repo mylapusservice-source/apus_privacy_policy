@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apus — Feedback de Testing</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --primary: #2d6a4f;
+    --primary-light: #e8f4ee;
+    --accent: #f4a261;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e2ddd7;
+    --error: #e63946;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 16px 80px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .logo-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+  }
+
+  .logo-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .form-container {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.15s; }
+  .card:nth-child(3) { animation-delay: 0.2s; }
+  .card:nth-child(4) { animation-delay: 0.25s; }
+  .card:nth-child(5) { animation-delay: 0.3s; }
+  .card:nth-child(6) { animation-delay: 0.35s; }
+
+  .section-tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 99px;
+    margin-bottom: 16px;
+  }
+
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  label .required {
+    color: var(--accent);
+    margin-left: 3px;
+  }
+
+  select, input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  select:focus, input:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.5;
+  }
+
+  /* Star rating */
+  .star-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .star-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .star-row-label {
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stars {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .stars input { display: none; }
+
+  .stars label {
+    font-size: 22px;
+    cursor: pointer;
+    color: #d1cdc7;
+    transition: color 0.15s, transform 0.1s;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .stars:hover label { color: #d1cdc7; }
+  .stars label:hover,
+  .stars label:hover ~ label { color: var(--accent) !important; }
+  .stars input:checked ~ label { color: var(--accent); }
+
+  .stars { flex-direction: row-reverse; }
+  .stars label:hover,
+  .stars input:checked ~ label { color: var(--accent); }
+
+  /* NPS */
+  .nps-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .nps-group input { display: none; }
+
+  .nps-group label {
+    width: 44px;
+    height: 44px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s;
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .nps-group input:checked + label {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+
+  .nps-group label:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .nps-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .nps-labels span {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Submit */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(45,106,79,0.25);
+  }
+
+  .submit-btn:hover {
+    background: #245c43;
+    box-shadow: 0 6px 20px rgba(45,106,79,0.35);
+  }
+
+  .submit-btn:active { transform: scale(0.98); }
+
+  /* Success */
+  .success {
+    display: none;
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .success-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .success h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .success p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0 20px;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .star-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .nps-group label { width: 38px; height: 38px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo">
+    <div class="logo-icon" style="background:transparent;color:var(--primary)"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"  width="52" height="52" viewBox="0 0 500.000000 500.000000"  preserveAspectRatio="xMidYMid meet">  <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none"> <path d="M2876 4071 c-39 -26 -55 -57 -56 -104 0 -56 25 -90 93 -129 33 -18 92 -56 130 -85 56 -42 74 -50 89 -42 10 5 18 15 18 21 0 18 -65 70 -157 127 -101 63 -113 74 -113 112 0 29 31 59 61 59 22 0 125 -58 209 -118 88 -63 233 -210 303 -309 101 -142 190 -347 227 -523 18 -87 24 -335 11 -444 -11 -87 -51 -245 -80 -320 -49 -123 -151 -289 -249 -403 -58 -67 -180 -179 -186 -172 -2 2 4 45 14 96 17 87 20 94 79 165 159 188 260 402 291 618 14 98 12 317 -5 411 -30 171 -108 356 -214 503 -62 87 -95 118 -117 109 -25 -10 -15 -38 39 -106 109 -136 191 -315 228 -492 24 -115 25 -329 3 -445 -35 -189 -121 -373 -244 -525 l-32 -40 4 55 c3 42 13 69 41 112 78 123 123 228 158 373 33 134 31 362 -4 496 -110 419 -393 704 -815 821 -65 19 -104 22 -257 22 -192 0 -249 -9 -406 -68 -44 -16 -71 -21 -86 -15 -12 4 -84 15 -160 24 -194 23 -377 9 -418 -31 -29 -30 -16 -40 82 -63 96 -24 259 -74 269 -84 3 -2 -29 -39 -70 -81 -282 -286 -390 -700 -281 -1081 53 -186 175 -390 308 -511 125 -114 314 -220 466 -260 161 -42 405 -43 560 -3 92 23 214 73 287 115 49 29 64 24 64 -21 0 -37 -166 -116 -344 -163 -90 -23 -120 -26 -266 -26 -216 0 -349 29 -522 115 -91 46 -139 50 -189 16 -62 -42 -70 -127 -17 -185 13 -14 64 -44 114 -67 162 -76 335 -120 517 -132 l97 -6 0 -108 c0 -100 -1 -108 -21 -114 -65 -21 -139 -133 -139 -212 l0 -43 310 0 310 0 0 40 c0 72 -57 166 -125 206 l-45 26 0 117 0 117 105 32 c58 18 129 43 158 56 28 14 53 23 55 22 6 -6 -20 -165 -35 -213 -9 -29 -13 -56 -10 -60 4 -4 25 11 47 32 49 47 143 230 179 346 9 28 18 38 39 42 15 3 58 33 95 66 250 220 418 520 472 841 22 128 16 412 -10 529 -40 179 -116 354 -222 513 -135 203 -461 468 -575 468 -18 0 -46 -9 -62 -19z m-376 -222 c36 -5 69 -14 74 -19 5 -5 -13 -15 -41 -23 -48 -14 -160 -68 -216 -104 -27 -17 -29 -17 -90 6 -34 12 -102 37 -150 53 -49 17 -85 34 -80 38 9 9 159 47 208 53 64 8 233 6 295 -4z m287 -92 c4 -5 -20 -64 -55 -132 l-63 -123 -154 76 c-85 42 -152 79 -149 84 9 14 145 80 194 94 48 14 213 15 227 1z m127 -88 c68 -81 106 -201 106 -337 l0 -91 -54 -15 c-30 -9 -60 -16 -68 -16 -22 0 -38 22 -38 51 0 15 -6 34 -14 41 -7 8 -21 28 -30 46 -9 18 -35 49 -56 70 -22 20 -40 41 -40 46 0 4 30 64 66 132 72 137 74 138 128 73z m-1137 -66 c37 -20 82 -47 99 -60 17 -13 33 -23 36 -23 5 0 107 -66 116 -75 2 -1 -23 -38 -56 -81 -32 -44 -80 -114 -106 -156 -26 -43 -50 -78 -53 -78 -9 0 -372 191 -377 198 -14 23 229 312 263 312 6 0 41 -17 78 -37z m1315 -60 c135 -143 253 -372 274 -535 l7 -50 -69 35 c-109 56 -109 56 -89 102 9 22 25 49 36 61 l19 21 -57 30 c-32 16 -75 33 -95 37 l-38 7 0 77 c0 67 -16 174 -35 233 -10 29 8 22 47 -18z m-940 -189 c9 -5 68 -60 132 -122 l116 -112 0 -58 c0 -67 -24 -124 -68 -165 l-30 -29 -208 111 c-115 60 -210 116 -212 124 -3 15 73 137 151 239 l51 68 25 -24 c15 -13 33 -27 43 -32z m-604 -158 c76 -41 159 -85 185 -98 57 -27 57 -22 -3 -158 -23 -52 -59 -153 -79 -225 -21 -71 -41 -129 -45 -129 -4 1 -75 37 -157 79 -119 63 -151 84 -156 103 -9 36 13 218 37 313 21 82 64 189 75 189 4 0 68 -33 143 -74z m645 -340 c31 -17 57 -33 57 -36 0 -3 -35 -45 -78 -95 -63 -74 -100 -105 -202 -172 -69 -46 -131 -83 -139 -83 -7 0 -45 17 -83 38 l-70 37 6 44 c12 88 60 234 124 373 l35 78 146 -76 c80 -42 172 -90 204 -108z m1077 87 l110 -58 0 -105 c0 -111 -22 -231 -59 -331 -31 -81 -42 -94 -70 -79 -22 11 -23 14 -16 128 7 108 5 123 -18 200 -32 103 -69 167 -107 187 -17 9 -30 19 -30 23 0 9 69 92 76 92 2 0 53 -26 114 -57z m-1804 -355 l137 -73 -7 -120 c-6 -112 -8 -121 -31 -138 -33 -25 -32 -40 3 -33 27 6 27 5 48 -81 12 -49 20 -90 18 -92 -8 -9 -87 76 -140 150 -68 97 -137 241 -164 341 -22 85 -25 118 -10 118 5 0 71 -33 146 -72z m1283 -68 l41 -20 -42 -68 c-55 -88 -134 -193 -197 -262 l-50 -55 -188 97 c-138 71 -188 101 -188 114 0 30 83 72 252 129 88 29 177 62 199 74 47 26 112 23 173 -9z m-990 -88 c10 -7 1 -19 -39 -51 -28 -22 -56 -41 -60 -41 -8 0 -3 99 6 128 3 12 45 -4 93 -36z m1092 -104 c36 -104 63 -203 79 -292 l13 -70 -27 -23 c-28 -24 -55 -29 -71 -14 -6 4 -68 38 -140 76 -71 37 -134 71 -139 76 -6 5 11 30 40 61 51 53 159 194 191 248 9 16 19 28 21 25 2 -2 17 -41 33 -87z m-1045 -52 c-16 -11 -52 -40 -80 -64 -44 -37 -51 -40 -58 -25 -18 47 -10 61 55 92 79 38 90 41 102 29 7 -7 0 -17 -19 -32z m1437 9 c-7 -21 -13 -19 -13 6 0 11 4 18 10 14 5 -3 7 -12 3 -20z m-1314 -186 c-50 -96 -95 -178 -100 -183 -15 -16 -78 54 -115 128 l-34 69 167 82 c93 45 169 81 171 80 2 -2 -38 -81 -89 -176z m339 66 c95 -49 171 -94 169 -100 -6 -19 -142 -115 -213 -150 -87 -43 -197 -68 -263 -59 -80 10 -81 13 -37 101 87 172 160 303 166 301 4 -2 84 -43 178 -93z m393 -207 c77 -40 139 -75 139 -79 0 -11 -144 -63 -230 -85 -115 -28 -460 -24 -460 5 0 5 24 16 53 26 74 24 185 87 264 150 38 30 74 54 82 55 8 0 76 -32 152 -72z m-850 -257 c170 -79 360 -121 546 -121 167 1 383 52 527 125 39 19 73 35 78 35 4 0 8 -31 8 -69 l0 -68 -67 -31 c-262 -118 -582 -152 -853 -90 -91 20 -257 80 -325 116 -63 33 -70 40 -73 70 -4 40 20 72 53 72 12 0 60 -18 106 -39z m767 -404 l3 -107 -81 0 -80 0 0 99 0 100 43 5 c23 3 53 7 67 9 14 2 30 3 35 2 6 -1 11 -47 13 -108z m50 -182 c43 -19 79 -50 98 -87 29 -56 32 -55 -205 -60 -121 -3 -231 -3 -244 -1 -23 5 -24 8 -16 36 11 37 63 94 104 112 44 19 216 19 263 0z"/> </g> </svg></div>
+    <span class="logo-name">Apus</span>
+  </div>
+  <h1>¿Qué te ha parecido?</h1>
+  <p class="subtitle">Tu opinión nos ayuda a mejorar la app antes del lanzamiento. Solo te llevará 3 minutos.</p>
+</div>
+
+<form class="form-container" id="feedbackForm">
+
+  <!-- Sección 1: Perfil -->
+  <div class="card">
+    <span class="section-tag">Sobre ti</span>
+    <h2>Cuéntanos un poco sobre ti</h2>
+
+    <div class="field">
+      <label>Edad <span class="required">*</span></label>
+      <select name="edad" required>
+        <option value="" disabled selected>Selecciona...</option>
+        <option>Menos de 18</option>
+        <option>18–24</option>
+        <option>25–34</option>
+        <option>35–44</option>
+        <option>45 o más</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>¿Cuántos viajes haces al año aproximadamente? <span class="required">*</span></label>
+      <select name="viajes_año" required>
+        <option value="" disabled selected>Selecciona...</option>
+        <option>Ninguno</option>
+        <option>1–2</option>
+        <option>3–5</option>
+        <option>Más de 5</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>¿Usas alguna app similar actualmente?</label>
+      <input type="text" name="apps_similares" placeholder="Ej. TripIt, Wanderlog, Splitwise... o ninguna">
+    </div>
+  </div>
+
+  <!-- Sección 2: Usabilidad -->
+  <div class="card">
+    <span class="section-tag">Usabilidad</span>
+    <h2>¿Qué tal fue la experiencia?</h2>
+    <div class="divider"></div>
+
+    <div class="star-group">
+      <div class="star-row">
+        <span class="star-row-label">Facilidad para crear un viaje</span>
+        <div class="stars">
+          <input type="radio" name="ux_crear" id="ux_crear_5" value="5"><label for="ux_crear_5">★</label>
+          <input type="radio" name="ux_crear" id="ux_crear_4" value="4"><label for="ux_crear_4">★</label>
+          <input type="radio" name="ux_crear" id="ux_crear_3" value="3"><label for="ux_crear_3">★</label>
+          <input type="radio" name="ux_crear" id="ux_crear_2" value="2"><label for="ux_crear_2">★</label>
+          <input type="radio" name="ux_crear" id="ux_crear_1" value="1"><label for="ux_crear_1">★</label>
+        </div>
+      </div>
+      <div class="star-row">
+        <span class="star-row-label">Claridad del diseño e interfaz</span>
+        <div class="stars">
+          <input type="radio" name="ux_diseño" id="ux_diseño_5" value="5"><label for="ux_diseño_5">★</label>
+          <input type="radio" name="ux_diseño" id="ux_diseño_4" value="4"><label for="ux_diseño_4">★</label>
+          <input type="radio" name="ux_diseño" id="ux_diseño_3" value="3"><label for="ux_diseño_3">★</label>
+          <input type="radio" name="ux_diseño" id="ux_diseño_2" value="2"><label for="ux_diseño_2">★</label>
+          <input type="radio" name="ux_diseño" id="ux_diseño_1" value="1"><label for="ux_diseño_1">★</label>
+        </div>
+      </div>
+      <div class="star-row">
+        <span class="star-row-label">¿Encontraste lo que buscabas fácilmente?</span>
+        <div class="stars">
+          <input type="radio" name="ux_nav" id="ux_nav_5" value="5"><label for="ux_nav_5">★</label>
+          <input type="radio" name="ux_nav" id="ux_nav_4" value="4"><label for="ux_nav_4">★</label>
+          <input type="radio" name="ux_nav" id="ux_nav_3" value="3"><label for="ux_nav_3">★</label>
+          <input type="radio" name="ux_nav" id="ux_nav_2" value="2"><label for="ux_nav_2">★</label>
+          <input type="radio" name="ux_nav" id="ux_nav_1" value="1"><label for="ux_nav_1">★</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección 3: Funcionalidades -->
+  <div class="card">
+    <span class="section-tag">Funcionalidades</span>
+    <h2>Valora cada función</h2>
+    <div class="divider"></div>
+
+    <div class="star-group">
+      <div class="star-row">
+        <span class="star-row-label">Gestión del itinerario</span>
+        <div class="stars">
+          <input type="radio" name="func_itinerario" id="func_it_5" value="5"><label for="func_it_5">★</label>
+          <input type="radio" name="func_itinerario" id="func_it_4" value="4"><label for="func_it_4">★</label>
+          <input type="radio" name="func_itinerario" id="func_it_3" value="3"><label for="func_it_3">★</label>
+          <input type="radio" name="func_itinerario" id="func_it_2" value="2"><label for="func_it_2">★</label>
+          <input type="radio" name="func_itinerario" id="func_it_1" value="1"><label for="func_it_1">★</label>
+        </div>
+      </div>
+      <div class="star-row">
+        <span class="star-row-label">Compartir viaje con otros</span>
+        <div class="stars">
+          <input type="radio" name="func_compartir" id="func_co_5" value="5"><label for="func_co_5">★</label>
+          <input type="radio" name="func_compartir" id="func_co_4" value="4"><label for="func_co_4">★</label>
+          <input type="radio" name="func_compartir" id="func_co_3" value="3"><label for="func_co_3">★</label>
+          <input type="radio" name="func_compartir" id="func_co_2" value="2"><label for="func_co_2">★</label>
+          <input type="radio" name="func_compartir" id="func_co_1" value="1"><label for="func_co_1">★</label>
+        </div>
+      </div>
+      <div class="star-row">
+        <span class="star-row-label">Modo viaje</span>
+        <div class="stars">
+          <input type="radio" name="func_modo" id="func_mo_5" value="5"><label for="func_mo_5">★</label>
+          <input type="radio" name="func_modo" id="func_mo_4" value="4"><label for="func_mo_4">★</label>
+          <input type="radio" name="func_modo" id="func_mo_3" value="3"><label for="func_mo_3">★</label>
+          <input type="radio" name="func_modo" id="func_mo_2" value="2"><label for="func_mo_2">★</label>
+          <input type="radio" name="func_modo" id="func_mo_1" value="1"><label for="func_mo_1">★</label>
+        </div>
+      </div>
+      <div class="star-row">
+        <span class="star-row-label">Ajustes y personalización</span>
+        <div class="stars">
+          <input type="radio" name="func_ajustes" id="func_aj_5" value="5"><label for="func_aj_5">★</label>
+          <input type="radio" name="func_ajustes" id="func_aj_4" value="4"><label for="func_aj_4">★</label>
+          <input type="radio" name="func_ajustes" id="func_aj_3" value="3"><label for="func_aj_3">★</label>
+          <input type="radio" name="func_ajustes" id="func_aj_2" value="2"><label for="func_aj_2">★</label>
+          <input type="radio" name="func_ajustes" id="func_aj_1" value="1"><label for="func_aj_1">★</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección 4: Preguntas abiertas -->
+  <div class="card">
+    <span class="section-tag">Tu opinión</span>
+    <h2>Cuéntanos más</h2>
+
+    <div class="field">
+      <label>¿Qué es lo que más te ha gustado? <span class="required">*</span></label>
+      <textarea name="gustado" required placeholder="Lo que más te llamó la atención o te resultó útil..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>¿Qué cambiarías o añadirías?</label>
+      <textarea name="mejorar" placeholder="Funciones que echas en falta, cosas que no te convencen..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>¿Hubo algo que no funcionó o te confundió?</label>
+      <textarea name="problemas" placeholder="Errores, pantallas confusas, flujos poco claros..."></textarea>
+    </div>
+  </div>
+
+  <!-- Sección 5: NPS -->
+  <div class="card">
+    <span class="section-tag">Recomendación</span>
+    <h2>Del 0 al 10, ¿recomendarías Apus a un amigo?</h2>
+
+    <div class="nps-group">
+      <input type="radio" name="nps" id="nps0" value="0"><label for="nps0">0</label>
+      <input type="radio" name="nps" id="nps1" value="1"><label for="nps1">1</label>
+      <input type="radio" name="nps" id="nps2" value="2"><label for="nps2">2</label>
+      <input type="radio" name="nps" id="nps3" value="3"><label for="nps3">3</label>
+      <input type="radio" name="nps" id="nps4" value="4"><label for="nps4">4</label>
+      <input type="radio" name="nps" id="nps5" value="5"><label for="nps5">5</label>
+      <input type="radio" name="nps" id="nps6" value="6"><label for="nps6">6</label>
+      <input type="radio" name="nps" id="nps7" value="7"><label for="nps7">7</label>
+      <input type="radio" name="nps" id="nps8" value="8"><label for="nps8">8</label>
+      <input type="radio" name="nps" id="nps9" value="9"><label for="nps9">9</label>
+      <input type="radio" name="nps" id="nps10" value="10"><label for="nps10">10</label>
+    </div>
+    <div class="nps-labels">
+      <span>Nada probable</span>
+      <span>Muy probable</span>
+    </div>
+  </div>
+
+  <button type="submit" class="submit-btn">Enviar feedback ✈</button>
+</form>
+
+<div class="success" id="successMsg">
+  <div class="success-icon">🎉</div>
+  <h2>¡Gracias por tu ayuda!</h2>
+  <p>Tu feedback es muy valioso para nosotros.<br>Te tendremos en cuenta para el lanzamiento de Apus.</p>
+</div>
+
+<script>
+  const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSd_nVCd2SDQxdf71ZhEu0uMdX4UFTBx6ClHz9Nzy2IaxlpnGw/formResponse";
+
+  const FIELD_MAP = {
+    edad:             "entry.769169393",
+    viajes_año:       "entry.453908858",
+    apps_similares:   "entry.2121856752",
+    ux_crear:         "entry.738808819",
+    "ux_diseño":      "entry.1399190414",
+    ux_nav:           "entry.732727899",
+    func_itinerario:  "entry.227298441",
+    func_compartir:   "entry.1878364159",
+    func_modo:        "entry.108142874",
+    func_ajustes:     "entry.996434993",
+    gustado:          "entry.1423978378",
+    mejorar:          "entry.1406867076",
+    problemas:        "entry.896803207",
+    nps:              "entry.1110232528",
+  };
+
+  document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const data = new FormData(this);
+    const params = new URLSearchParams();
+
+    for (const [name, entryId] of Object.entries(FIELD_MAP)) {
+      const val = data.get(name) || "";
+      params.append(entryId, val);
+    }
+
+    // Enviamos a Google Forms (no-cors, no esperamos respuesta)
+    fetch(FORM_ACTION, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString()
+    });
+
+    // Mostramos pantalla de éxito
+    this.style.display = 'none';
+    const success = document.getElementById('successMsg');
+    success.style.display = 'block';
+    success.style.animation = 'fadeUp 0.5s ease both';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
