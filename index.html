@@ -155,7 +155,8 @@
     <ul>
       <li><strong>Datos de cuenta:</strong> correo electrónico, nombre de usuario y foto de perfil.</li>
       <li><strong>Datos de viajes:</strong> nombre, destino, fechas, descripción e imagen del viaje; días del itinerario y actividades planificadas (nombre, descripción, ubicación, coste, duración y hora).</li>
-      <li><strong>Datos de colaboración:</strong> identificadores de los usuarios con quienes compartes un viaje.</li>
+      <li><strong>Datos de colaboración:</strong> identificadores de los usuarios con quienes compartes un viaje, estado de las invitaciones (pendiente o aceptada) y rol de cada miembro.</li>
+      <li><strong>Documentos del viaje:</strong> archivos subidos por los usuarios al viaje (fotos, billetes, documentos de identidad y reservas), junto con su nombre, descripción, tipo y configuración de visibilidad (público o privado). Los archivos se almacenan en Firebase Storage.</li>
     </ul>
   </div>
 
@@ -174,7 +175,7 @@
   <div class="card">
     <h2>¿Dónde se almacenan tus datos?</h2>
     <p>Tus datos se almacenan en <strong>Google Firebase</strong> (Firestore y Firebase Storage), servicios de Google LLC ubicados en la Unión Europea o con garantías adecuadas conforme al RGPD.</p>
-    <p>Las fotos de perfil y las imágenes de viajes se almacenan en Firebase Storage. El resto de la información (viajes, itinerarios, actividades) se guarda en Firestore.</p>
+    <p>Las fotos de perfil, imágenes de viajes y documentos subidos por los usuarios se almacenan en Firebase Storage. El resto de la información (viajes, itinerarios, actividades, colaboradores y metadatos de documentos) se guarda en Firestore.</p>
   </div>
 
   <div class="card">
